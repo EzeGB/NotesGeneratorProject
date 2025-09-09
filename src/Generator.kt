@@ -1,3 +1,7 @@
+import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.roundToInt
+
 class Generator (
     private val algorithm:String,
     private val baseFrequency:Double,
@@ -15,7 +19,12 @@ class Generator (
 
     private fun edoAlgorithm(baseFrequency:Double, subdivisions:Int): List<Double>{
         println("EDO called")
-        return emptyList()
+        val notesInOctave = mutableListOf<Double>()
+        for (i in 0 until subdivisions){
+            val newNote = baseFrequency * 2.0.pow(i/subdivisions.toDouble())
+            notesInOctave.add(newNote)
+        }
+        return notesInOctave
     }
 
     private fun justPrimeAlgorithm(baseFrequency:Double, limit:Int, maxOctaveDiv: Int): List<Double>{
