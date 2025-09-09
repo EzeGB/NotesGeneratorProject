@@ -5,19 +5,31 @@ class Generator (
 ){
     fun generate(): List<Double>{
         return when (algorithm){
-            "a"-> callA()
-            "b"-> callB()
+            "edo"-> edoAlgorithm(baseFrequency,12)
+            "justPrime"-> justPrimeAlgorithm(baseFrequency,7,8)
+            "justOdd"-> justOddAlgorithm(baseFrequency,15)
+            "Pythagorean"-> pythagoreanAlgorithm(baseFrequency)
             else -> emptyList()
         }
     }
 
-    private fun callA(): List<Double>{
-        println("A called")
+    private fun edoAlgorithm(baseFrequency:Double, subdivisions:Int): List<Double>{
+        println("EDO called")
         return emptyList()
     }
 
-    private fun callB(): List<Double>{
-        println("B called")
+    private fun justPrimeAlgorithm(baseFrequency:Double, limit:Int, maxOctaveDiv: Int): List<Double>{
+        println("Just Prime called")
+        return emptyList()
+    }
+
+    private fun justOddAlgorithm(baseFrequency:Double, limit:Int): List<Double>{
+        println("Just Odd called")
+        return emptyList()
+    }
+
+    private fun pythagoreanAlgorithm(baseFrequency:Double): List<Double>{
+        println("Pythagorean called")
         return emptyList()
     }
 }
