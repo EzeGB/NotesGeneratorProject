@@ -1,6 +1,6 @@
 fun main() {
 
-    val generatedNotes = Generator("edo",
+    val generatedNotes = Generator("justOdd",
         440.0,
         emptyList()).generate()
 
