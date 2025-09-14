@@ -3,7 +3,7 @@ import kotlin.math.round
 
 fun main() {
 
-    val generatedNotes = Generator("justOdd",
+    val generatedNotes = Generator("justPrime",
         440.0,
         emptyList()).generate()
 
