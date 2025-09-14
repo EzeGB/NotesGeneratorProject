@@ -119,6 +119,17 @@ class Generator (
 
 
             //do stuff
+            head.forEach { headPrimeExponent ->
+                permutatedTail.forEach { otherPrimesExponents ->
+                    val newPermutation = mutableListOf<Int>()
+                    newPermutation.add(headPrimeExponent)
+                    otherPrimesExponents.forEach {
+                        newPermutation.add(it)
+                    }
+                    permutations.add(newPermutation)
+                }
+
+            }
         }
         return permutations.toList()
     }
