@@ -8,7 +8,7 @@ class Generator (
     fun generate(): List<Double>{
         return when (algorithm){
             "edo"-> edoAlgorithm(baseFrequency,12)
-            "justPrime"-> justPrimeAlgorithm(baseFrequency,13,2)
+            "justPrime"-> justPrimeAlgorithm(baseFrequency,5,"normal")
             "justOdd"-> justOddAlgorithm(baseFrequency,15)
             "Pythagorean"-> pythagoreanAlgorithm(baseFrequency)
             else -> emptyList()
@@ -28,12 +28,27 @@ class Generator (
         return notesInOctave
     }
 
-    private fun justPrimeAlgorithm(baseFrequency:Double, limit:Int, expRange: Int): List<Double>{
+    private fun justPrimeAlgorithm(baseFrequency:Double, limit:Int, deepness: String): List<Double>{
         println("Just Prime called")
         val primes: List<Double> = eratosthenesSieve(limit).map { it.toDouble() }
-        val exponents = primes.map { generateExponentsForPrime(expRange) }
+        val exponents = primes.map { prime-> generateExponentsForPrime(prime,deepness) }
 
+        val ratios = mutableListOf<Double>()
         val permutatedExponents = permutateExponents(exponents.toMutableList())
+
+        permutatedExponents.forEach { exponents ->
+            val ratio = primes
+                .mapIndexed { index, prime -> prime.pow(exponents[index]) }
+                .reduce { accumulated, next -> accumulated*next }
+            if (ratio in 1.0..2.0){
+                ratios.add(ratio)
+            }
+        }
+        ratios.forEach {
+            println("${approximateFraction(it)}")
+        }
+
+        println("Number of permutations: ${permutatedExponents.size}")
         return emptyList()
     }
 
@@ -100,8 +115,29 @@ class Generator (
         }
         return primeIntegers
     }
-    private fun generateExponentsForPrime(range: Int): List<Int>{
-        return (-range..range).toList()
+    private fun generateExponentsForPrime(prime: Double, deepness: String): List<Int>{
+        var exponents = emptyList<Int>()
+        when (deepness){
+            "normal" -> {
+                exponents = when(prime){
+                    2.0 -> (-6..6).toList()
+                    3.0, 5.0 -> (-4..4).toList()
+                    7.0, 11.0-> (-2..2).toList()
+                    else -> (-1..1).toList()
+                }
+            }
+            "deep" -> {
+                exponents = when(prime){
+                    2.0 -> (-11..11).toList()
+                    3.0 -> (-7..7).toList()
+                    5.0 -> (-4..4).toList()
+                    7.0, 11.0, 13.0, 17.0-> (-2..2).toList()
+                    else -> (-1..1).toList()
+                }
+            }
+            else -> (-1..1).toList()
+        }
+        return exponents.toList()
     }
     private fun permutateExponents(exponents: MutableList<List<Int>>): List<List<Int>>{
         val permutations = mutableListOf<List<Int>>()
@@ -116,7 +152,6 @@ class Generator (
             val head = exponents.first()
             val tail = exponents.drop(1).toMutableList()
             val permutatedTail = permutateExponents(tail)
-
 
             //do stuff
             head.forEach { headPrimeExponent ->
